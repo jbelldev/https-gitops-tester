@@ -1,0 +1,26 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: httpd
+  namespace: httpd-tester
+spec:
+  lookupPolicy:
+    local: false
+
+  tags:
+  - annotations: null
+    importPolicy:
+      importMode: Legacy
+    name: downstream
+    referencePolicy:
+      type: Source
+
+  - annotations: null
+    from:
+      kind: DockerImage
+      name: docker.io/httpd:alpine
+    importPolicy:
+      importMode: Legacy
+    name: upstream
+    referencePolicy:
+      type: Source

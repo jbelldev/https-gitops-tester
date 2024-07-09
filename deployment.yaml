@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"httpd:downstream","namespace":"httpd-tester"},"fieldPath":"spec.template.spec.containers[?(@.name==\"httpd\")].image"}]'
+    openshift.io/generated-by: OpenShiftNewApp
+  labels:
+    app: httpd
+    app.kubernetes.io/component: httpd
+    app.kubernetes.io/instance: httpd
+  name: httpd
+  namespace: httpd-tester
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deployment: httpd
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        deployment: httpd
+    spec:
+      containers:
+      - image: image-registry.openshift-image-registry.svc:5000/httpd-tester/httpd@sha256:38625087137353c718aa8c7ee590b00e6852fdfe56acfe2220c9a68bfdcf084b
+        imagePullPolicy: IfNotPresent
+        name: httpd
+        ports:
+        - containerPort: 8080
+          protocol: TCP

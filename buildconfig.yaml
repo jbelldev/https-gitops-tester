@@ -1,0 +1,41 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: httpd-buildconfig
+  namespace: httpd-tester
+spec:
+
+  output:
+    to:
+      kind: ImageStreamTag
+      name: httpd:downstream
+
+  runPolicy: Serial
+
+  source:
+    type: Dockerfile
+    configMaps:
+    - configMap:
+        name: httpd-source-files
+      destinationDir: ./public-html/
+    dockerfile: |-
+      FROM httpd:alpine
+
+      COPY ./public-html/ /usr/local/apache2/htdocs/
+
+      RUN sed -i \
+            -e 's/Listen 80/Listen 8080/' \
+            conf/httpd.conf
+      EXPOSE 8080
+
+      RUN chown -R :0 /usr/local/apache2/ && \
+          chmod -R g=u /usr/local/apache2/
+
+  strategy:
+    type: Docker
+    dockerStrategy:
+      from:
+        kind: ImageStreamTag
+        name: httpd:upstream
+
+  successfulBuildsHistoryLimit: 5
