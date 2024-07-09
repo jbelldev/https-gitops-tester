@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/instance: httpd
   name: httpd
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       deployment: httpd
