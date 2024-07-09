@@ -1,19 +1,12 @@
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  annotations:
-    openshift.io/host.generated: "true"
-  creationTimestamp: "2024-07-09T13:32:37Z"
   labels:
     app: httpd
     app.kubernetes.io/component: httpd
     app.kubernetes.io/instance: httpd
   name: httpd
-  namespace: httpd-tester
-  resourceVersion: "1491419082"
-  uid: 06656c21-b6fa-4bbf-a62d-982706c1c421
 spec:
-  host: httpd-httpd-tester.apps.okd.home.arpa
   port:
     targetPort: 8080-tcp
   tls:
@@ -24,13 +17,3 @@ spec:
     name: httpd
     weight: 100
   wildcardPolicy: None
-status:
-  ingress:
-  - conditions:
-    - lastTransitionTime: "2024-07-09T13:32:37Z"
-      status: "True"
-      type: Admitted
-    host: httpd-httpd-tester.apps.okd.home.arpa
-    routerCanonicalHostname: router-default.apps.okd.home.arpa
-    routerName: default
-    wildcardPolicy: None

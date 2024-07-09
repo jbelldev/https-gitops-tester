@@ -9,7 +9,6 @@ metadata:
     app.kubernetes.io/component: httpd
     app.kubernetes.io/instance: httpd
   name: httpd
-  namespace: httpd-tester
 spec:
   replicas: 1
   selector:
@@ -27,7 +26,7 @@ spec:
         deployment: httpd
     spec:
       containers:
-      - image: image-registry.openshift-image-registry.svc:5000/httpd-tester/httpd@sha256:38625087137353c718aa8c7ee590b00e6852fdfe56acfe2220c9a68bfdcf084b
+      - image: httpd:downstream
         imagePullPolicy: IfNotPresent
         name: httpd
         ports:
