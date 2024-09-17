@@ -17,7 +17,7 @@ spec:
   - annotations: null
     from:
       kind: DockerImage
-      name: docker.io/httpd:alpine
+      name: registry.access.redhat.com/ubi9/httpd-24:latest
     importPolicy:
       importMode: Legacy
     name: upstream
