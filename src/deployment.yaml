@@ -2,18 +2,17 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"httpd:downstream","namespace":"httpd-tester"},"fieldPath":"spec.template.spec.containers[?(@.name==\"httpd\")].image"}]'
-    openshift.io/generated-by: OpenShiftNewApp
+    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"httpd:downstream"},"fieldPath":"spec.template.spec.containers[?(@.name==\"httpd\")].image"}]'
   labels:
     app: httpd
     app.kubernetes.io/component: httpd
     app.kubernetes.io/instance: httpd
   name: httpd
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
-      deployment: httpd
+      app: httpd
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -23,6 +22,9 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
+        app: httpd
+        app.kubernetes.io/component: httpd
+        app.kubernetes.io/instance: httpd
         deployment: httpd
     spec:
       containers:

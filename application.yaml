@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: https-gitops-tester
+  namespace: openshift-gitops
+spec:
+  destination:
+    namespace: https-gitops-tester
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: src
+    repoURL: https://github.com/jbelldev/https-gitops-tester.git
+    targetRevision: HEAD
+  syncPolicy:
+    managedNamespaceMetadata:
+      labels:
+        argocd.argoproj.io/managed-by: openshift-gitops
+    syncOptions:
+    - CreateNamespace=true
+  ignoreDifferences:
+  - group: "apps"
+    kind: "Deployment"
+    jsonPointers:
+    - /spec/replicas
+    - /spec/template/spec/containers/0/image
