@@ -20,28 +20,23 @@ tutorial-level basics.
 
 
 * Installation
-Installing and using _https-gitops-tester_ is as simple as adding the Application
-manifest to the cluster:
+Installing and using _https-gitops-tester_ is as cloning this repo, and adding the
+Application manifest to the cluster:
 
 #+begin_src sh
 oc apply -f ./application.yaml
 #+end_src
 
+#+RESULTS:
+: application.argoproj.io/https-gitops-tester created
+
 The default Application manifest includes the label needed for OpenShift GitOps'
 default ArgoCD instance to create and label (but not maintain) the namespace it
 creates for this project, ~https-gitops-tester~.
 
-The App will then need to synced. This can be done simply, with no other tooling,
-using a basic patch:
-
-#+begin_src sh
-cat <<EOF | oc patch -f application.yaml --patch-file /dev/stdin --type merge
-operation:
-  sync:
-    syncStrategy:
-      hook: {}
-EOF
-#+end_src
+*The App will then need to synced*. Unfortunately, for a newly created namespace,
+this will likely need to be done via the ArgoCD web console, or the ~argocd~
+binary (if installed).
 
 Once synced, ArgoCD will create the destination namespace and deploy the
 resources for the sample app to it.
@@ -53,6 +48,9 @@ commandline:
 #+begin_src sh
 oc start-build -n https-gitops-tester bc/httpd-buildconfig
 #+end_src
+
+#+RESULTS:
+: build.build.openshift.io/httpd-buildconfig-1 started
 
 Once this build completes, the Deployment will finish, and the Route can be
 queried to be served the site as defined by the [[file:src/configmap.yaml][ConfigMap]].

@@ -1,14 +1,14 @@
 
 # Table of Contents
 
-1.  [Overview](#orgb98c6ed)
-    1.  [Purpose](#orgb92a4dc)
-2.  [Installation](#org733e715)
-3.  [Uninstalling](#org91b4e03)
+1.  [Overview](#org40d72d6)
+    1.  [Purpose](#orgcd915ab)
+2.  [Installation](#org6315da6)
+3.  [Uninstalling](#org2e0f571)
 
 
 
-<a id="orgb98c6ed"></a>
+<a id="org40d72d6"></a>
 
 # Overview
 
@@ -23,7 +23,7 @@ OpenShift GitOps, it can deploy the entirety of this project using
 `oc apply -f ./application.yaml`.
 
 
-<a id="orgb92a4dc"></a>
+<a id="orgcd915ab"></a>
 
 ## Purpose
 
@@ -34,12 +34,12 @@ establish expectations with a project slightly more complex than the usual
 tutorial-level basics.
 
 
-<a id="org733e715"></a>
+<a id="org6315da6"></a>
 
 # Installation
 
-Installing and using <span class="underline">https-gitops-tester</span> is as simple as adding the Application
-manifest to the cluster:
+Installing and using <span class="underline">https-gitops-tester</span> is as cloning this repo, and adding the
+Application manifest to the cluster:
 
     oc apply -f ./application.yaml
 
@@ -47,15 +47,9 @@ The default Application manifest includes the label needed for OpenShift GitOps&
 default ArgoCD instance to create and label (but not maintain) the namespace it
 creates for this project, `https-gitops-tester`.
 
-The App will then need to synced. This can be done simply, with no other tooling,
-using a basic patch:
-
-    cat <<EOF | oc patch -f application.yaml --patch-file /dev/stdin --type merge
-    operation:
-      sync:
-        syncStrategy:
-          hook: {}
-    EOF
+**The App will then need to synced**. Unfortunately, for a newly created namespace,
+this will likely need to be done via the ArgoCD web console, or the `argocd`
+binary (if installed).
 
 Once synced, ArgoCD will create the destination namespace and deploy the
 resources for the sample app to it.
@@ -70,7 +64,7 @@ Once this build completes, the Deployment will finish, and the Route can be
 queried to be served the site as defined by the [ConfigMap](src/configmap.yaml).
 
 
-<a id="org91b4e03"></a>
+<a id="org2e0f571"></a>
 
 # Uninstalling
 
