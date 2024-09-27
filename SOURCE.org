@@ -39,18 +39,16 @@ this will likely need to be done via the ArgoCD web console, or the ~argocd~
 binary (if installed).
 
 Once synced, ArgoCD will create the destination namespace and deploy the
-resources for the sample app to it.
-
-To finish installation, the image for the Deployment must be created by
-kickstarting a Build from the BuildConfig. This can also be done easily from the
-commandline:
+resources for the sample app to it. To finish installation, the image for the
+Deployment must be created by the initial Build for the BuildConfig; this
+resource can be watched using ~oc wait~:
 
 #+begin_src sh
-oc start-build -n https-gitops-tester bc/httpd-buildconfig
+oc wait --for=condition=Complete build/initial-https-builder -n https-gitops-tester
 #+end_src
 
 #+RESULTS:
-: build.build.openshift.io/httpd-buildconfig-1 started
+: build.build.openshift.io/initial-https-builder condition met
 
 Once this build completes, the Deployment will finish, and the Route can be
 queried to be served the site as defined by the [[file:src/configmap.yaml][ConfigMap]].

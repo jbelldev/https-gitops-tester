@@ -1,14 +1,14 @@
 
 # Table of Contents
 
-1.  [Overview](#org40d72d6)
-    1.  [Purpose](#orgcd915ab)
-2.  [Installation](#org6315da6)
-3.  [Uninstalling](#org2e0f571)
+1.  [Overview](#orgd792226)
+    1.  [Purpose](#org3d6d948)
+2.  [Installation](#org21fd45b)
+3.  [Uninstalling](#orgaa34586)
 
 
 
-<a id="org40d72d6"></a>
+<a id="orgd792226"></a>
 
 # Overview
 
@@ -23,7 +23,7 @@ OpenShift GitOps, it can deploy the entirety of this project using
 `oc apply -f ./application.yaml`.
 
 
-<a id="orgcd915ab"></a>
+<a id="org3d6d948"></a>
 
 ## Purpose
 
@@ -34,7 +34,7 @@ establish expectations with a project slightly more complex than the usual
 tutorial-level basics.
 
 
-<a id="org6315da6"></a>
+<a id="org21fd45b"></a>
 
 # Installation
 
@@ -52,19 +52,17 @@ this will likely need to be done via the ArgoCD web console, or the `argocd`
 binary (if installed).
 
 Once synced, ArgoCD will create the destination namespace and deploy the
-resources for the sample app to it.
+resources for the sample app to it. To finish installation, the image for the
+Deployment must be created by the initial Build for the BuildConfig; this
+resource can be watched using `oc wait`:
 
-To finish installation, the image for the Deployment must be created by
-kickstarting a Build from the BuildConfig. This can also be done easily from the
-commandline:
-
-    oc start-build -n https-gitops-tester bc/httpd-buildconfig
+    oc wait --for=condition=Complete build/initial-https-builder -n https-gitops-tester
 
 Once this build completes, the Deployment will finish, and the Route can be
 queried to be served the site as defined by the [ConfigMap](src/configmap.yaml).
 
 
-<a id="org2e0f571"></a>
+<a id="orgaa34586"></a>
 
 # Uninstalling
 
