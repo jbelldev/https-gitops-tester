@@ -11,7 +11,7 @@ spec:
   source:
     path: src
     repoURL: https://github.com/jbelldev/https-gitops-tester.git
-    targetRevision: HEAD
+    targetRevision: dev
   syncPolicy:
     managedNamespaceMetadata:
       labels:
